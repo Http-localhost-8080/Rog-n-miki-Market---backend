@@ -1,0 +1,28 @@
+{
+    "name": "Note",
+    "fields": [
+        {
+            "fieldName": "note",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "article",
+            "otherEntityRelationshipName": "note",
+            "relationshipName": "article",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200520183300",
+    "entityTableName": "note",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

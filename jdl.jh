@@ -1,0 +1,65 @@
+entity Category {
+	icon String required,
+    title String required,
+    description String
+}
+
+entity Note {
+	note Integer
+}
+
+entity Picture {
+	name Blob required
+}
+
+entity City {
+	name String required
+}
+
+entity Etat {
+	available Boolean required,
+    type String required,
+    frais Double 
+}
+
+entity User {
+	
+}
+
+entity Article {
+	title String required,
+    description String,
+    price Double required,
+    createAt LocalDate
+}
+
+entity Pannier {
+	quantite Integer,
+    priceTotal Double
+}
+
+// Set RelationShip
+relationship OneToMany {
+	Article{note} to Note{article},
+    Category{article} to Article{category},
+    Article{picture} to Picture{article}
+}
+
+relationship ManyToMany {
+	Article{city} to City{article},
+    Article{etat} to Etat{article},
+    Article{user} to User{article},
+    Article{pannier} to Pannier{article}
+}
+
+// Set pagination options
+paginate Article, Category, Picture, City, Pannier with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

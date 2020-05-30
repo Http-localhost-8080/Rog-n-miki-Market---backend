@@ -1,0 +1,33 @@
+{
+    "name": "Pannier",
+    "fields": [
+        {
+            "fieldName": "quantite",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "priceTotal",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "article",
+            "otherEntityRelationshipName": "pannier",
+            "relationshipName": "article",
+            "otherEntityField": "id",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20200520183900",
+    "entityTableName": "pannier",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

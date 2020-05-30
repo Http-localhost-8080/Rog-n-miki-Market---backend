@@ -1,0 +1,72 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="article">
+            <h2><span>Article</span> {{ article.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Title</span></dt>
+                <dd>
+                    <span>{{ article.title }}</span>
+                </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{ article.description }}</span>
+                </dd>
+                <dt><span>Price</span></dt>
+                <dd>
+                    <span>{{ article.price }}</span>
+                </dd>
+                <dt><span>Create At</span></dt>
+                <dd>
+                    <span>{{ article.createAt }}</span>
+                </dd>
+                <dt><span>City</span></dt>
+                <dd>
+                    <span *ngFor="let city of article.cities; let last = last">
+                        <a [routerLink]="['/city', city?.id, 'view']">{{ city.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span>Etat</span></dt>
+                <dd>
+                    <span *ngFor="let etat of article.etats; let last = last">
+                        <a [routerLink]="['/etat', etat?.id, 'view']">{{ etat.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    <span *ngFor="let user of article.users; let last = last">
+                        {{ user.id }}{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span>Pannier</span></dt>
+                <dd>
+                    <span *ngFor="let pannier of article.panniers; let last = last">
+                        <a [routerLink]="['/pannier', pannier?.id, 'view']">{{ pannier.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span>Category</span></dt>
+                <dd>
+                    <div *ngIf="article.category">
+                        <a [routerLink]="['/category', article.category?.id, 'view']">{{ article.category?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/article', article.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

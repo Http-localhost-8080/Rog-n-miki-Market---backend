@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-picture-heading">Create or edit a Picture</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <div>
+                        <div *ngIf="editForm.get('name')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('nameContentType')!.value, editForm.get('name')!.value)">open</a><br>
+                            <span class="pull-left">{{ editForm.get('nameContentType')!.value }}, {{ byteSize(editForm.get('name')!.value) }}</span>
+                            <img [src]="'data:' + editForm.get('nameContentType')!.value + ';base64,' + editForm.get('name')!.value" alt=""/>
+                            <button type="button" (click)="editForm.patchValue({name: null});editForm.patchValue({nameContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_name" (change)="setFileData($event, 'name', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <input type="hidden" class="form-control" name="nameContentType" id="field_nameContentType"
+                           formControlName="nameContentType" />
+                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_article">Article</label>
+                    <select class="form-control" id="field_article" name="article" formControlName="article">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="articleOption.id === editForm.get('article')!.value?.id ? editForm.get('article')!.value : articleOption" *ngFor="let articleOption of articles; trackBy: trackById">{{ articleOption.title }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

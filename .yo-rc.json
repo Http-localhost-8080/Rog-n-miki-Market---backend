@@ -1,0 +1,40 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "bf.shopping"
+    },
+    "jhipsterVersion": "6.7.1",
+    "applicationType": "monolith",
+    "baseName": "Shopping",
+    "packageName": "bf.shopping",
+    "packageFolder": "bf/shopping",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MDcxMzRkMmI1YzcxN2QzZmFhM2M4NzQ0ZWZkMDg4YTM5NjRkYWRiZWFmMmFkNDczYTI3MTExMDA1ZTRmYjgzYTI2YmI1OWI3OTg0MzFhNzdiMDFlN2Q2ZjkyZDc2ZDg0Zjk0MzY4MzQyMmM3ZDEzMzU4ZTFhMWQ5ZWI0Zjg2NmE=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "materia",
+    "clientThemeVariant": "primary",
+    "creationTimestamp": 1589958724389,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}
