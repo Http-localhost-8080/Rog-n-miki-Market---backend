@@ -12,7 +12,7 @@
                                  baseTableName="pannier"
                                  constraintName="fk_pannier_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user"/>
+                                 referencedTableName="jhi_user"/>
 
     </changeSet>
 </databaseChangeLog>

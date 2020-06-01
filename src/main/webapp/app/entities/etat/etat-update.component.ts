@@ -33,9 +33,9 @@ export class EtatUpdateComponent implements OnInit {
   updateForm(etat: IEtat): void {
     this.editForm.patchValue({
       id: etat.id,
-      available: etat.available,
-      type: etat.type,
-      frais: etat.frais
+      available: etat.available
+      // type: etat.type,
+      // frais: etat.frais
     });
   }
 
@@ -57,9 +57,9 @@ export class EtatUpdateComponent implements OnInit {
     return {
       ...new Etat(),
       id: this.editForm.get(['id'])!.value,
-      available: this.editForm.get(['available'])!.value,
-      type: this.editForm.get(['type'])!.value,
-      frais: this.editForm.get(['frais'])!.value
+      available: this.editForm.get(['available'])!.value
+      // type: this.editForm.get(['type'])!.value,
+      // frais: this.editForm.get(['frais'])!.value
     };
   }
 

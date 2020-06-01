@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-10">
         <div class="card mt-5 mb-5">
             <div class="card-header h1 font-weight-bold bg-info text-white">
                 Créer ou ajouter un article
@@ -10,13 +10,18 @@
                     <div>
                         <jhi-alert-error></jhi-alert-error>
 
+                        <!--Détail de l'article -->
+                        <div class="bg-info text-light h3 pl-5 font-weight-bold">
+                            Détail de l'article
+                        </div>
+
                         <div class="form-group" [hidden]="!editForm.get('id')!.value">
                             <label for="id">ID</label>
                             <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                         </div>
 
                         <div class="form-group">
-                            <label class="form-control-label" for="field_title">Title</label>
+                            <label class="form-control-label" for="field_title">Nom de l'article</label>
                             <input type="text" placeholder="Entrer le titre de l'article" class="form-control" name="title" id="field_title"
                                    formControlName="title"/>
                             <div *ngIf="editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)">
@@ -35,7 +40,7 @@
 
                         <div class="form-group">
                             <label class="form-control-label" for="field_price">Prix</label>
-                            <input type="number" placeholder="Entrer le prix de l'article" class="form-control" name="price" id="field_price"
+                            <input type="number" placeholder="Entrer le prix de l'article" min="0" class="form-control" name="price" id="field_price"
                                    formControlName="price"/>
                             <div *ngIf="editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched)">
                                 <small class="form-text text-danger"
@@ -50,53 +55,54 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-control-label" for="field_createAt">Date de création</label>
-                            <div class="input-group">
-                                <input id="field_createAt" placeholder="Sélectionner la date de création de l'article" type="text" class="form-control" name="createAt" ngbDatepicker #createAtDp="ngbDatepicker" formControlName="createAt"/>
-                                <span class="input-group-append">
-                            <button type="button" class="btn btn-secondary" (click)="createAtDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-                        </span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="field_cities">Ville</label>
-                            <select class="form-control" id="field_cities" multiple name="cities" formControlName="cities">
-                                <option [ngValue]="getSelected(editForm.get('cities')!.value, cityOption)" *ngFor="let cityOption of cities; trackBy: trackById">{{ cityOption.name }}</option>
+                            <label for="field_cities">Où se trouve l'article ?</label>
+                            <select class="form-control" id="field_cities" name="city" formControlName="city">
+                                <option value="" selected disabled>Sélectionner la ville</option>
+                                <option [ngValue]="getSelected(editForm.get('city')!.value, cityOption)" *ngFor="let cityOption of city; trackBy: trackById">{{ cityOption.name }}</option>
                             </select>
                         </div>
-
-                        <div class="form-group">
-                            <label for="field_etats">Etat</label>
-                            <select class="form-control" id="field_etats" multiple name="etats" formControlName="etats">
-                                <option [ngValue]="getSelected(editForm.get('etats')!.value, etatOption)" *ngFor="let etatOption of etats; trackBy: trackById">{{ etatOption.type }}</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="field_users">User</label>
-                            <select class="form-control" id="field_users" multiple name="users" formControlName="users">
-                                <option [ngValue]="getSelected(editForm.get('users')!.value, userOption)" *ngFor="let userOption of users; trackBy: trackById">{{ userOption.login }}</option>
-                            </select>
-                        </div>
-
-                        <!--
-                        <div class="form-group">
-                            <label for="field_panniers">Pannier</label>
-                            <select class="form-control" id="field_panniers" multiple name="panniers" formControlName="panniers">
-                                <option [ngValue]="getSelected(editForm.get('panniers')!.value, pannierOption)" *ngFor="let pannierOption of panniers; trackBy: trackById">{{ pannierOption.id }}</option>
-                            </select>
-                        </div>
-                        -->
 
                         <div class="form-group">
                             <label class="form-control-label" for="field_category">Categorie</label>
                             <select class="form-control" id="field_category" name="category" formControlName="category">
-                                <option selected disabled>Sélectionner la catégorie de votre article</option>
+                                <option value="" selected disabled>Sélectionner la catégorie de votre article</option>
                                 <option [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption" *ngFor="let categoryOption of categories; trackBy: trackById">{{ categoryOption.title }}</option>
                             </select>
                         </div>
 
+                        <!--Etat de l'article -->
+                        <div class="bg-info text-light h3 pl-5 font-weight-bold">
+                            Etat de l'article
+                        </div>
+
+                        <div class="form-group">
+                            <label for="etat">Etat</label>
+                            <select name="etat" id="etat" class="form-control">
+                                <option value="" selected disabled>Sélectionner l'état</option>
+                                <option value="Neuf">Neuf</option>
+                                <option value="Déja utilisé">Déja utilisé</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modeAcquisition">Mode d'acquisition</label>
+                            <select name="modeAcquisition" id="modeAcquisition" class="form-control" formControlName="modeAcquisition">
+                                <option value="" selected disabled>Sélectionner le mode d'acquisition de votre article</option>
+                                <option value="Livraison">Livraison</option>
+                                <option value="Disponible en mangasin">Disponible en mangasin</option>
+                                <option value="Main à main">Main à main</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fraisLivraison" class="col-form-label">Frais de livraison</label>
+                            <input type="text" id="fraisLivraison" name="fraisLivraison" formControlName="fraisLivraison" placeholder="Entrez les frais de livraison" class="form-control"/>
+                        </div>
+
+                        <!--Images de l'article -->
+                        <div class="bg-info text-light h3 pl-5 font-weight-bold">
+                            Images de l'article
+                        </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-4">

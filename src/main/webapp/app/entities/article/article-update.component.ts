@@ -11,7 +11,7 @@ import { ICity } from 'app/shared/model/city.model';
 import { CityService } from 'app/entities/city/city.service';
 import { IEtat } from 'app/shared/model/etat.model';
 import { EtatService } from 'app/entities/etat/etat.service';
-import { IUser } from 'app/core/user/user.model';
+import { IUser, User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { IPannier } from 'app/shared/model/pannier.model';
 import { PannierService } from 'app/entities/pannier/pannier.service';
@@ -20,6 +20,8 @@ import { CategoryService } from 'app/entities/category/category.service';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { IPicture, Picture } from 'app/shared/model/picture.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 type SelectableEntity = ICity | IEtat | IUser | IPannier | ICategory;
 
@@ -31,26 +33,26 @@ type SelectableManyToManyEntity = ICity | IEtat | IUser | IPannier;
 })
 export class ArticleUpdateComponent implements OnInit {
   isSaving = false;
-  cities: ICity[] = [];
-  etats: IEtat[] = [];
+  city: ICity[] = [];
+  etat: IEtat[] = [];
   users: IUser[] = [];
   panniers: IPannier[] = [];
   categories: ICategory[] = [];
   pictures: IPicture[];
   picture: Picture;
-  createAtDp: any;
+  logerUser: Account;
+  user: User;
 
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required]],
     description: [],
     price: [null, [Validators.required]],
-    createAt: [],
-    cities: [],
-    etats: [],
-    users: [],
-    panniers: [],
-    category: [],
+    city: [[Validators.required]],
+    category: [[Validators.required]],
+    etat: [[Validators.required]],
+    modeAcquisition: [[Validators.required]],
+    fraisLivraison: [null, [Validators.required]],
     name: [],
     nameContentType: []
   });
@@ -65,21 +67,36 @@ export class ArticleUpdateComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private accountService: AccountService
   ) {
     this.pictures = new Array<IPicture>();
     this.picture = new Picture();
+    this.user = new User();
+    this.logerUser = new Account();
   }
 
   ngOnInit(): void {
+    this.accountService.identity(true).subscribe(
+      data => {
+        console.log(data);
+        this.logerUser = data;
+        console.log(this.logerUser);
+        this.user.id = this.logerUser.id;
+        this.user.login = this.logerUser.login;
+      },
+      error => {
+        console.log(error);
+      }
+    );
     this.activatedRoute.data.subscribe(({ article }) => {
       this.updateForm(article);
 
-      this.cityService.query().subscribe((res: HttpResponse<ICity[]>) => (this.cities = res.body || []));
+      this.cityService.query().subscribe((res: HttpResponse<ICity[]>) => (this.city = res.body || []));
 
-      this.etatService.query().subscribe((res: HttpResponse<IEtat[]>) => (this.etats = res.body || []));
+      this.etatService.query().subscribe((res: HttpResponse<IEtat[]>) => (this.etat = res.body || []));
 
-      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+      // this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
 
       this.pannierService.query().subscribe((res: HttpResponse<IPannier[]>) => (this.panniers = res.body || []));
 
@@ -94,9 +111,9 @@ export class ArticleUpdateComponent implements OnInit {
       description: article.description,
       price: article.price,
       createAt: article.createAt,
-      cities: article.cities,
-      etats: article.etats,
-      users: article.users,
+      cities: article.city,
+      etats: article.etat,
+      user: article.user,
       panniers: article.panniers,
       category: article.category
     });
@@ -123,10 +140,10 @@ export class ArticleUpdateComponent implements OnInit {
       title: this.editForm.get(['title'])!.value,
       description: this.editForm.get(['description'])!.value,
       price: this.editForm.get(['price'])!.value,
-      createAt: this.editForm.get(['createAt'])!.value,
-      cities: this.editForm.get(['cities'])!.value,
-      etats: this.editForm.get(['etats'])!.value,
-      users: this.editForm.get(['users'])!.value,
+      createAt: new Date(),
+      city: this.editForm.get(['cities'])!.value,
+      etat: this.editForm.get(['etats'])!.value,
+      user: this.user,
       panniers: this.editForm.get(['panniers'])!.value,
       category: this.editForm.get(['category'])!.value,
       pictures: this.pictures

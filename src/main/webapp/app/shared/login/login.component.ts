@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 import { LoginService } from 'app/core/login/login.service';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-login-modal',
@@ -14,6 +15,7 @@ export class LoginModalComponent implements AfterViewInit {
   username?: ElementRef;
 
   authenticationError = false;
+  user: Account | null | undefined;
 
   loginForm = this.fb.group({
     username: ['', [Validators.required]],
@@ -23,6 +25,7 @@ export class LoginModalComponent implements AfterViewInit {
 
   constructor(
     private loginService: LoginService,
+    // private parameter: ParameterService,
     private renderer: Renderer,
     private router: Router,
     public activeModal: NgbActiveModal,
@@ -52,7 +55,7 @@ export class LoginModalComponent implements AfterViewInit {
         rememberMe: this.loginForm.get('rememberMe')!.value
       })
       .subscribe(
-        () => {
+        response => {
           this.authenticationError = false;
           this.activeModal.close();
           if (
@@ -62,6 +65,10 @@ export class LoginModalComponent implements AfterViewInit {
           ) {
             this.router.navigate(['']);
           }
+          console.log(response);
+          this.user = response;
+          // this.parameter.setLogerUser(this.user);
+          // console.log(this.parameter.getLogerUser());
         },
         () => (this.authenticationError = true)
       );

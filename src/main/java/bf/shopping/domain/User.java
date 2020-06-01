@@ -57,6 +57,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(length = 254, unique = true)
     private String email;
 
+    @Size(max = 50)
+    @Column(name = "telephone", length = 50)
+    private String telephone;
+
+    @Size(max = 50)
+    @Column(name = "type_compte", length = 50)
+    private String typeCompte;
+
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
@@ -88,12 +96,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
         name = "jhi_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
-
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+    private Set<Note> notes = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
     private Set<Pannier> panniers = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Article> articles = new HashSet<>();
 
     public boolean isActivated() {
         return activated;
@@ -109,6 +122,38 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public String getTypeCompte() {
+        return typeCompte;
+    }
+
+    public void setTypeCompte(String typeCompte) {
+        this.typeCompte = typeCompte;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
+
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public void setId(Long id) {

@@ -40,28 +40,22 @@ public class Article implements Serializable {
     private LocalDate createAt;
 
     @OneToMany(mappedBy = "article")
-    private Set<Note> notes = new HashSet<>();
-
-    @OneToMany(mappedBy = "article")
     private Set<Picture> pictures = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "article_city",
-               joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"))
-    private Set<City> cities = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("articles")
+    private City city;
 
-    @ManyToMany
-    @JoinTable(name = "article_etat",
-               joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "etat_id", referencedColumnName = "id"))
-    private Set<Etat> etats = new HashSet<>();
+    @OneToMany(mappedBy = "article")
+    private Set<Note> notes = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "article_user",
-               joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    private Set<User> users = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("articles")
+    private Etat etat;
+
+    @ManyToOne
+    @JsonIgnoreProperties("articles")
+    private User user;
 
     @ManyToMany
     @JoinTable(name = "article_pannier",
@@ -74,8 +68,28 @@ public class Article implements Serializable {
     private Category category;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+    public Article() {
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public Etat getEtat() {
+        return etat;
+    }
+
+    public void setEtat(Etat etat) {
+        this.etat = etat;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setId(Long id) {
@@ -86,22 +100,12 @@ public class Article implements Serializable {
         return title;
     }
 
-    public Article title(String title) {
-        this.title = title;
-        return this;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     public String getDescription() {
         return description;
-    }
-
-    public Article description(String description) {
-        this.description = description;
-        return this;
     }
 
     public void setDescription(String description) {
@@ -112,11 +116,6 @@ public class Article implements Serializable {
         return price;
     }
 
-    public Article price(Double price) {
-        this.price = price;
-        return this;
-    }
-
     public void setPrice(Double price) {
         this.price = price;
     }
@@ -125,157 +124,36 @@ public class Article implements Serializable {
         return createAt;
     }
 
-    public Article createAt(LocalDate createAt) {
-        this.createAt = createAt;
-        return this;
-    }
-
     public void setCreateAt(LocalDate createAt) {
         this.createAt = createAt;
-    }
-
-    public Set<Note> getNotes() {
-        return notes;
-    }
-
-    public Article notes(Set<Note> notes) {
-        this.notes = notes;
-        return this;
-    }
-
-    public Article addNote(Note note) {
-        this.notes.add(note);
-        note.setArticle(this);
-        return this;
-    }
-
-    public Article removeNote(Note note) {
-        this.notes.remove(note);
-        note.setArticle(null);
-        return this;
-    }
-
-    public void setNotes(Set<Note> notes) {
-        this.notes = notes;
     }
 
     public Set<Picture> getPictures() {
         return pictures;
     }
 
-    public Article pictures(Set<Picture> pictures) {
-        this.pictures = pictures;
-        return this;
-    }
-
-    public Article addPicture(Picture picture) {
-        this.pictures.add(picture);
-        picture.setArticle(this);
-        return this;
-    }
-
-    public Article removePicture(Picture picture) {
-        this.pictures.remove(picture);
-        picture.setArticle(null);
-        return this;
-    }
-
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
     }
 
-    public Set<City> getCities() {
-        return cities;
+    public City getCity() {
+        return city;
     }
 
-    public Article cities(Set<City> cities) {
-        this.cities = cities;
-        return this;
+    public void setCity(City city) {
+        this.city = city;
     }
 
-    public Article addCity(City city) {
-        this.cities.add(city);
-        city.getArticles().add(this);
-        return this;
+    public Set<Note> getNotes() {
+        return notes;
     }
 
-    public Article removeCity(City city) {
-        this.cities.remove(city);
-        city.getArticles().remove(this);
-        return this;
-    }
-
-    public void setCities(Set<City> cities) {
-        this.cities = cities;
-    }
-
-    public Set<Etat> getEtats() {
-        return etats;
-    }
-
-    public Article etats(Set<Etat> etats) {
-        this.etats = etats;
-        return this;
-    }
-
-    public Article addEtat(Etat etat) {
-        this.etats.add(etat);
-        etat.getArticles().add(this);
-        return this;
-    }
-
-    public Article removeEtat(Etat etat) {
-        this.etats.remove(etat);
-        etat.getArticles().remove(this);
-        return this;
-    }
-
-    public void setEtats(Set<Etat> etats) {
-        this.etats = etats;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public Article users(Set<User> users) {
-        this.users = users;
-        return this;
-    }
-
-    public Article addUser(User user) {
-        this.users.add(user);
-        return this;
-    }
-
-    public Article removeUser(User user) {
-        this.users.remove(user);
-        return this;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
     }
 
     public Set<Pannier> getPanniers() {
         return panniers;
-    }
-
-    public Article panniers(Set<Pannier> panniers) {
-        this.panniers = panniers;
-        return this;
-    }
-
-    public Article addPannier(Pannier pannier) {
-        this.panniers.add(pannier);
-        pannier.getArticles().add(this);
-        return this;
-    }
-
-    public Article removePannier(Pannier pannier) {
-        this.panniers.remove(pannier);
-        pannier.getArticles().remove(this);
-        return this;
     }
 
     public void setPanniers(Set<Pannier> panniers) {
@@ -286,15 +164,10 @@ public class Article implements Serializable {
         return category;
     }
 
-    public Article category(Category category) {
-        this.category = category;
-        return this;
-    }
-
     public void setCategory(Category category) {
         this.category = category;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

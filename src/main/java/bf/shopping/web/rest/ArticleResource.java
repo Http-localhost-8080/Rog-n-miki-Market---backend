@@ -3,6 +3,7 @@ package bf.shopping.web.rest;
 import bf.shopping.domain.Article;
 import bf.shopping.domain.Picture;
 import bf.shopping.service.ArticleService;
+import bf.shopping.service.PictureService;
 import bf.shopping.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +23,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing {@link bf.shopping.domain.Article}.
@@ -42,9 +39,11 @@ public class ArticleResource {
     private String applicationName;
 
     private final ArticleService articleService;
+    private final PictureService pictureService;
 
-    public ArticleResource(ArticleService articleService) {
+    public ArticleResource(ArticleService articleService, PictureService pictureService) {
         this.articleService = articleService;
+        this.pictureService = pictureService;
     }
 
     /**
@@ -57,16 +56,21 @@ public class ArticleResource {
     @PostMapping("/articles")
     public ResponseEntity<Article> createArticle(@Valid @RequestBody Article article) throws URISyntaxException {
         log.debug("REST request to save Article : {}", article);
-        System.out.println("\n \n Size == " + article.getPictures().size() + "\n \n");
         if (article.getId() != null) {
             throw new BadRequestAlertException("A new article cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Set<Picture> pictures = article.getPictures();
-         Iterator<Picture> iterator = pictures.iterator();
-         while (iterator.hasNext()) {
-             System.out.println(iterator.next().getName());
-         }
         Article result = articleService.save(article);
+
+        // Enregistrement des images de l'article
+        Set<Picture> pictures = article.getPictures();
+        Iterator<Picture> iterator = pictures.iterator();
+        Picture picture = null;
+        while (iterator.hasNext()) {
+            picture = iterator.next();
+            picture.setArticle(result);
+            pictureService.save(picture);
+            picture = null;
+        }
         return ResponseEntity.created(new URI("/api/articles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);

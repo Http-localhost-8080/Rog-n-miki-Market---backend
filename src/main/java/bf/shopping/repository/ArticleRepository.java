@@ -17,14 +17,14 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    @Query(value = "select distinct article from Article article left join fetch article.cities left join fetch article.etats left join fetch article.users left join fetch article.panniers",
+    @Query(value = "select distinct article from Article article left join fetch article.city left join fetch article.etat left join fetch article.user left join fetch article.panniers",
         countQuery = "select count(distinct article) from Article article")
     Page<Article> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct article from Article article left join fetch article.cities left join fetch article.etats left join fetch article.users left join fetch article.panniers")
+    @Query("select distinct article from Article article left join fetch article.city left join fetch article.etat left join fetch article.user left join fetch article.panniers")
     List<Article> findAllWithEagerRelationships();
 
-    @Query("select article from Article article left join fetch article.cities left join fetch article.etats left join fetch article.users left join fetch article.panniers where article.id =:id")
+    @Query("select article from Article article left join fetch article.city left join fetch article.etat left join fetch article.user left join fetch article.panniers where article.id =:id")
     Optional<Article> findOneWithEagerRelationships(@Param("id") Long id);
 
 }

@@ -35,7 +35,7 @@ export class AccountService {
     return this.userIdentity.authorities.some((authority: string) => authorities.includes(authority));
   }
 
-  identity(force?: boolean): Observable<Account | null> {
+  identity(force?: boolean): Observable<Account> {
     if (!this.accountCache$ || force || !this.isAuthenticated()) {
       this.accountCache$ = this.fetch().pipe(
         catchError(() => {
@@ -51,6 +51,7 @@ export class AccountService {
         shareReplay()
       );
     }
+    // @ts-ignore
     return this.accountCache$;
   }
 
@@ -62,8 +63,12 @@ export class AccountService {
     return this.authenticationState.asObservable();
   }
 
-  getImageUrl(): string {
-    return this.userIdentity ? this.userIdentity.imageUrl : '';
+  getImageUrl(): string | undefined {
+    if (this.userIdentity) {
+      return this.userIdentity.imageUrl;
+    } else {
+      return '';
+    }
   }
 
   private fetch(): Observable<Account> {

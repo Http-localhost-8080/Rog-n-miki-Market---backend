@@ -28,6 +28,10 @@ public class Note implements Serializable {
     @JsonIgnoreProperties("notes")
     private Article article;
 
+    @ManyToOne
+    @JsonIgnoreProperties("notes")
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -44,6 +48,14 @@ public class Note implements Serializable {
     public Note note(Integer note) {
         this.note = note;
         return this;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setNote(Integer note) {

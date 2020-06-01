@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
 
-  getImageUrl(): string {
+  getImageUrl(): string | undefined {
     return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
   }
 }

@@ -29,17 +29,24 @@ public class Etat implements Serializable {
     private Boolean available;
 
     @NotNull
-    @Column(name = "type", nullable = false)
-    private String type;
+    @Column(name = "mode_acquisition", nullable = false)
+    private String modeAcquisition;
 
-    @Column(name = "frais")
-    private Double frais;
+    @NotNull
+    @Column(name = "etat_article", nullable = false)
+    private String etatArticle;
 
-    @ManyToMany(mappedBy = "etats")
-    @JsonIgnore
+    @Column(name = "frais_livraison")
+    private Double fraisLivraison;
+
+    @OneToMany(mappedBy = "etat")
     private Set<Article> articles = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+    public Etat() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -48,70 +55,46 @@ public class Etat implements Serializable {
         this.id = id;
     }
 
-    public Boolean isAvailable() {
+    public Boolean getAvailable() {
         return available;
-    }
-
-    public Etat available(Boolean available) {
-        this.available = available;
-        return this;
     }
 
     public void setAvailable(Boolean available) {
         this.available = available;
     }
 
-    public String getType() {
-        return type;
+    public String getModeAcquisition() {
+        return modeAcquisition;
     }
 
-    public Etat type(String type) {
-        this.type = type;
-        return this;
+    public void setModeAcquisition(String modeAcquisition) {
+        this.modeAcquisition = modeAcquisition;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getEtatArticle() {
+        return etatArticle;
     }
 
-    public Double getFrais() {
-        return frais;
+    public void setEtatArticle(String etatArticle) {
+        this.etatArticle = etatArticle;
     }
 
-    public Etat frais(Double frais) {
-        this.frais = frais;
-        return this;
+    public Double getFraisLivraison() {
+        return fraisLivraison;
     }
 
-    public void setFrais(Double frais) {
-        this.frais = frais;
+    public void setFraisLivraison(Double fraisLivraison) {
+        this.fraisLivraison = fraisLivraison;
     }
 
     public Set<Article> getArticles() {
         return articles;
     }
 
-    public Etat articles(Set<Article> articles) {
-        this.articles = articles;
-        return this;
-    }
-
-    public Etat addArticle(Article article) {
-        this.articles.add(article);
-        article.getEtats().add(this);
-        return this;
-    }
-
-    public Etat removeArticle(Article article) {
-        this.articles.remove(article);
-        article.getEtats().remove(this);
-        return this;
-    }
-
     public void setArticles(Set<Article> articles) {
         this.articles = articles;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -133,9 +116,10 @@ public class Etat implements Serializable {
     public String toString() {
         return "Etat{" +
             "id=" + getId() +
-            ", available='" + isAvailable() + "'" +
-            ", type='" + getType() + "'" +
-            ", frais=" + getFrais() +
+            ", available='" + getAvailable() + "'" +
+            ", etatArticle ='" + getEtatArticle() +
+            ", mode acquistion='" + getModeAcquisition() + "'" +
+            ", frais=" + getFraisLivraison() +
             "}";
     }
 }

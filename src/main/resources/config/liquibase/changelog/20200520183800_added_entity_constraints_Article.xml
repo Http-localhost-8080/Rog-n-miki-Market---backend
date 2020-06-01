@@ -7,7 +7,7 @@
         Added the constraints for entity Article.
     -->
     <changeSet id="20200520183800-2" author="jhipster">
-        
+        <!--
         <addForeignKeyConstraint baseColumnNames="article_id"
                                  baseTableName="article_city"
                                  constraintName="fk_article_city_article_id"
@@ -19,7 +19,8 @@
                                  constraintName="fk_article_city_city_id"
                                  referencedColumnNames="id"
                                  referencedTableName="city"/>
-        
+
+
         <addForeignKeyConstraint baseColumnNames="article_id"
                                  baseTableName="article_etat"
                                  constraintName="fk_article_etat_article_id"
@@ -31,19 +32,21 @@
                                  constraintName="fk_article_etat_etat_id"
                                  referencedColumnNames="id"
                                  referencedTableName="etat"/>
-        
+        -->
         <addForeignKeyConstraint baseColumnNames="article_id"
                                  baseTableName="article_user"
                                  constraintName="fk_article_user_article_id"
                                  referencedColumnNames="id"
                                  referencedTableName="article"/>
 
+        <!--
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="article_user"
                                  constraintName="fk_article_user_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
-        
+        -->
+
         <addForeignKeyConstraint baseColumnNames="article_id"
                                  baseTableName="article_pannier"
                                  constraintName="fk_article_pannier_article_id"
@@ -55,12 +58,30 @@
                                  constraintName="fk_article_pannier_pannier_id"
                                  referencedColumnNames="id"
                                  referencedTableName="pannier"/>
-        
+
         <addForeignKeyConstraint baseColumnNames="category_id"
                                  baseTableName="article"
                                  constraintName="fk_article_category_id"
                                  referencedColumnNames="id"
                                  referencedTableName="category"/>
+
+        <addForeignKeyConstraint baseColumnNames="city_id"
+                                 baseTableName="article"
+                                 constraintName="fk_article_city_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="city"/>
+
+        <addForeignKeyConstraint baseColumnNames="etat_id"
+                                 baseTableName="article"
+                                 constraintName="fk_article_etat_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="etat"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="article"
+                                 constraintName="fk_article_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"/>
 
     </changeSet>
 </databaseChangeLog>
