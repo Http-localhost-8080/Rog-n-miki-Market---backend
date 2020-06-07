@@ -50,6 +50,7 @@
                 <table class="table table-bordered table-striped" aria-describedby="page-heading">
                     <thead>
                     <tr class="bg-info font-weight-bold text-white" jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                        <th scope="col"  jhiSortBy="title"><span>#</span> </th>
                         <th scope="col"  jhiSortBy="title"><span>Titre</span> <fa-icon icon="sort"></fa-icon></th>
                         <th scope="col"  jhiSortBy="description"><span>Description</span> <fa-icon icon="sort"></fa-icon></th>
                         <th scope="col"  jhiSortBy="price"><span>Prix</span> <fa-icon icon="sort"></fa-icon></th>
@@ -59,7 +60,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let article of articles ;trackBy: trackId" class="text-dark">
+                    <tr *ngFor="let article of articles;let i = index ;trackBy: trackId" class="text-dark">
+                        <td>{{i + 1}}</td>
                         <td>{{ article.title }}</td>
                         <td>{{ article.description }}</td>
                         <td>{{ article.price | number}}</td>
@@ -69,22 +71,19 @@
                             <div class="btn-group">
                                 <button type="submit"
                                         [routerLink]="['/article', article.id, 'view']"
-                                        class="btn btn-info btn-sm">
+                                        class="btn btn-info">
                                     <fa-icon icon="eye"></fa-icon>
-                                    <span class="d-none d-md-inline">View</span>
                                 </button>
 
                                 <button type="submit"
                                         [routerLink]="['/article', article.id, 'edit']"
-                                        class="btn btn-primary btn-sm">
+                                        class="btn btn-primary">
                                     <fa-icon icon="pencil-alt"></fa-icon>
-                                    <span class="d-none d-md-inline">Edit</span>
                                 </button>
 
                                 <button type="submit" (click)="delete(article)"
-                                        class="btn btn-danger btn-sm">
+                                        class="btn btn-danger">
                                     <fa-icon icon="times"></fa-icon>
-                                    <span class="d-none d-md-inline">Delete</span>
                                 </button>
                             </div>
                         </td>

@@ -6,8 +6,12 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +41,9 @@ public class Article implements Serializable {
     private Double price;
 
     @Column(name = "create_at")
-    private LocalDate createAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private Date createAt;
 
     @OneToMany(mappedBy = "article")
     private Set<Picture> pictures = new HashSet<>();
@@ -120,11 +126,11 @@ public class Article implements Serializable {
         this.price = price;
     }
 
-    public LocalDate getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(LocalDate createAt) {
+    public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 

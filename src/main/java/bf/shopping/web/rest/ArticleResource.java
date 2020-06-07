@@ -4,6 +4,7 @@ import bf.shopping.domain.Article;
 import bf.shopping.domain.Picture;
 import bf.shopping.service.ArticleService;
 import bf.shopping.service.PictureService;
+import bf.shopping.service.dto.ArticleDTO;
 import bf.shopping.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -49,28 +50,17 @@ public class ArticleResource {
     /**
      * {@code POST  /articles} : Create a new article.
      *
-     * @param article the article to create.
+     * @param articleDTO the article to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new article, or with status {@code 400 (Bad Request)} if the article has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/articles")
-    public ResponseEntity<Article> createArticle(@Valid @RequestBody Article article) throws URISyntaxException {
-        log.debug("REST request to save Article : {}", article);
-        if (article.getId() != null) {
+    public ResponseEntity<Article> createArticle(@RequestBody ArticleDTO articleDTO) throws URISyntaxException {
+        log.debug("REST request to save Article : {}", articleDTO);
+        if (articleDTO.getId() != null) {
             throw new BadRequestAlertException("A new article cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Article result = articleService.save(article);
-
-        // Enregistrement des images de l'article
-        Set<Picture> pictures = article.getPictures();
-        Iterator<Picture> iterator = pictures.iterator();
-        Picture picture = null;
-        while (iterator.hasNext()) {
-            picture = iterator.next();
-            picture.setArticle(result);
-            pictureService.save(picture);
-            picture = null;
-        }
+        Article result = articleService.save(articleDTO);
         return ResponseEntity.created(new URI("/api/articles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -79,22 +69,22 @@ public class ArticleResource {
     /**
      * {@code PUT  /articles} : Updates an existing article.
      *
-     * @param article the article to update.
+     * @param articleDTO the article to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated article,
      * or with status {@code 400 (Bad Request)} if the article is not valid,
      * or with status {@code 500 (Internal Server Error)} if the article couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/articles")
-    public ResponseEntity<Article> updateArticle(@Valid @RequestBody Article article) throws URISyntaxException {
-        log.debug("REST request to update Article : {}", article);
-        if (article.getId() == null) {
+    public ResponseEntity<Article> updateArticle(@Valid @RequestBody ArticleDTO articleDTO) throws URISyntaxException {
+        log.debug("REST request to update Article : {}", articleDTO);
+        if (articleDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Article result = articleService.save(article);
+        Article result = articleService.save(articleDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, article.getId().toString()))
-            .body(result);
+           .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, articleDTO.getId().toString()))
+           .body(result);
     }
 
     /**
@@ -157,5 +147,10 @@ public class ArticleResource {
         Page<Article> page = articleService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/search/articles/pictures")
+    public List<Article> findArticlesWithPictures() {
+        return articleService.findArticlesWithPictures();
     }
 }

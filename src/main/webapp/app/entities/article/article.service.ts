@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
 import { IArticle } from 'app/shared/model/article.model';
+import { ArticleDto } from 'app/shared/dto/article-dto.model';
 
 type EntityResponseType = HttpResponse<IArticle>;
 type EntityArrayResponseType = HttpResponse<IArticle[]>;
@@ -16,14 +17,14 @@ export class ArticleService {
 
   constructor(protected http: HttpClient) {}
 
-  create(article: IArticle): Observable<EntityResponseType> {
-    const copy = article.createAt;
-    return this.http.post<IArticle>(this.resourceUrl, copy, { observe: 'response' });
+  create(article: ArticleDto): Observable<HttpResponse<ArticleDto>> {
+    // const copy = article.createAt;
+    return this.http.post<ArticleDto>(this.resourceUrl, article, { observe: 'response' });
   }
 
-  update(article: IArticle): Observable<EntityResponseType> {
-    const copy = article.createAt;
-    return this.http.put<IArticle>(this.resourceUrl, copy, { observe: 'response' });
+  update(article: ArticleDto): Observable<HttpResponse<ArticleDto>> {
+    // const copy = article.createAt;
+    return this.http.put<ArticleDto>(this.resourceUrl, article, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {

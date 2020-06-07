@@ -64,7 +64,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
         sort: this.sort()
       })
       .subscribe(
-        (res: HttpResponse<IArticle[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<IArticle[]>) => {
+          console.log(res);
+          this.onSuccess(res.body, res.headers, pageToLoad);
+        },
         () => this.onError()
       );
   }

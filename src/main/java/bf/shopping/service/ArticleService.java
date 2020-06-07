@@ -2,9 +2,11 @@ package bf.shopping.service;
 
 import bf.shopping.domain.Article;
 
+import bf.shopping.service.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,8 +20,7 @@ public interface ArticleService {
      * @param article the entity to save.
      * @return the persisted entity.
      */
-    Article save(Article article);
-
+    Article save(ArticleDTO article);
     /**
      * Get all the articles.
      *
@@ -54,9 +55,11 @@ public interface ArticleService {
      * Search for the article corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<Article> search(String query, Pageable pageable);
+
+    List<Article> findArticlesWithPictures();
 }
